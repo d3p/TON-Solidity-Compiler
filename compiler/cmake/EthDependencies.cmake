@@ -28,6 +28,7 @@ option(Boost_USE_STATIC_LIBS "Link Boost statically" ON)
 
 set(BOOST_COMPONENTS "filesystem;unit_test_framework;program_options;system")
 
+set(Boost_INCLUDE_DIR "C:/Users/sasha/Downloads/sol2tvm-dev/pub/compiler/deps/install/win64/include/boost")
 find_package(Boost 1.65.0 QUIET REQUIRED COMPONENTS ${BOOST_COMPONENTS})
 
 # If cmake is older than boost and boost is older than 1.70,
