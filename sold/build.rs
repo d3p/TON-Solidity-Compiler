@@ -29,8 +29,10 @@ fn main() {
     println!("cargo:rustc-link-search=native={}/lib", sol2tvm.display());
     println!("cargo:rustc-link-search=native={}/build/deps/lib", sol2tvm.display());
 
+
     if cfg!(target_os = "windows") {
-        let path = std::path::PathBuf::from("../compiler/deps/install/win64/lib");
+        let lib_path = std::env::var("BOOST_LIB_PATH").unwrap_or("../compiler/deps/install/win64/lib".to_string());
+        let path = std::path::PathBuf::from(&lib_path);
         println!("cargo:rustc-link-search=native={}", std::fs::canonicalize(path).unwrap().display());
     } else if cfg!(target_os = "macos") {
         println!("cargo:rustc-link-search=native=/opt/homebrew/lib");
