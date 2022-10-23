@@ -28,9 +28,6 @@ option(Boost_USE_STATIC_LIBS "Link Boost statically" ON)
 
 set(BOOST_COMPONENTS "filesystem;unit_test_framework;program_options;system")
 
-if(DEFINED ENV{Boost_INCLUDE_DIR})
-	set(Boost_INCLUDE_DIR $ENV{Boost_INCLUDE_DIR})
-endif()
 find_package(Boost 1.65.0 QUIET REQUIRED COMPONENTS ${BOOST_COMPONENTS})
 
 # If cmake is older than boost and boost is older than 1.70,

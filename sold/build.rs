@@ -11,6 +11,8 @@
  * limitations under the License.
  */
 
+use std::process::Command;
+
 fn main() {
     println!("cargo:rerun-if-changed=../compiler/");
 
@@ -31,8 +33,9 @@ fn main() {
 
 
     if cfg!(target_os = "windows") {
-        let lib_path = std::env::var("BOOST_LIB_PATH").unwrap_or("../compiler/deps/install/win64/lib".to_string());
-        let path = std::path::PathBuf::from(&lib_path);
+        let install_deps = Command::new("cmake").arg("-P").arg("../compiler/scripts/install_deps.cmake").output();
+        assert!(install_deps.is_ok());
+        let path = std::path::PathBuf::from("../compiler/deps/install/win64/lib");
         println!("cargo:rustc-link-search=native={}", std::fs::canonicalize(path).unwrap().display());
     } else if cfg!(target_os = "macos") {
         println!("cargo:rustc-link-search=native=/opt/homebrew/lib");
