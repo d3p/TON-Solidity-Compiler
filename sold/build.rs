@@ -15,7 +15,10 @@ use std::process::Command;
 
 fn main() {
     println!("cargo:rerun-if-changed=../compiler/");
-
+    if cfg!(target_os = "windows") {
+        let install_deps = Command::new("cmake").arg("-P").arg("../compiler/scripts/install_deps.cmake").output();
+        assert!(install_deps.is_ok());
+    }
     let profile = std::env::var("PROFILE").unwrap();
     let sol2tvm = cmake::Config::new("../compiler").build();
 
@@ -33,8 +36,6 @@ fn main() {
 
 
     if cfg!(target_os = "windows") {
-        let install_deps = Command::new("cmake").arg("-P").arg("../compiler/scripts/install_deps.cmake").output();
-        assert!(install_deps.is_ok());
         let path = std::path::PathBuf::from("../compiler/deps/install/win64/lib");
         println!("cargo:rustc-link-search=native={}", std::fs::canonicalize(path).unwrap().display());
     } else if cfg!(target_os = "macos") {
